@@ -170,6 +170,16 @@ describe("Scoreboard", () => {
       expect(scoreboard.getSummary()).toEqual([]);
     });
 
+    test("should not include in the list matches that were removed", () => {
+      const firstMatch = scoreboard.addMatch(homeTeamName, awayTeamName);
+      const matchToBeRemoved = scoreboard.addMatch(homeTeamName, awayTeamName);
+      const thirdMatch = scoreboard.addMatch(homeTeamName, awayTeamName);
+      scoreboard.removeMatch(matchToBeRemoved.id);
+      expect(scoreboard.getSummary()).toContain(firstMatch);
+      expect(scoreboard.getSummary()).not.toContain(matchToBeRemoved);
+      expect(scoreboard.getSummary()).toContain(thirdMatch);
+    });
+
     test("example test from the task", () => {
       const firstMatchWithTotal5 = scoreboard.addMatch("Mexico", "Canada");
       scoreboard.updateMatchScore(firstMatchWithTotal5.id, 0, 5);
